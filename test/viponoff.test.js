@@ -1,5 +1,6 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2 foldmethod=marker: */
 
+var fs = require('fs');
 var should  = require('should');
 var urllib  = require('urllib');
 
@@ -31,10 +32,19 @@ describe('viponoff test', function () {
       done();
     });
 
-    urllib.request('http:/' + '/localhost:8124/are_you_ok', function (error, data, res) {
-      res.statusCode.should.eql(404);
-      done();
+    fs.unlink(__dirname + '/status.tmp', function (error) {
+      urllib.request('http:/' + '/localhost:8124/are_you_ok', function (error, data, res) {
+        res.statusCode.should.eql(404);
+        fs.writeFile(__dirname + '/status.tmp', 'ON', function (error) {
+          should.ok(!error);
+          urllib.request('http:/' + '/localhost:8124/are_you_ok', function (error, data, res) {
+            res.statusCode.should.eql(200);
+            done();
+          });
+        });
+      });
     });
+
   });
   /* }}} */
 
