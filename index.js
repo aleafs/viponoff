@@ -4,7 +4,7 @@
 
 var fs = require('fs');
 
-exports.create = function (options) {
+exports.create = function (options, next) {
 
   var _options = {
     'statusurl'  : '/status.taobao',
@@ -14,7 +14,7 @@ exports.create = function (options) {
     _options[i] = options[i];
   }
 
-  return function (req, res, next) {
+  return function (req, res) {
     if (!req || !req.url || !res || !res.writeHead || !res.end) {
       return;
     }
@@ -27,7 +27,7 @@ exports.create = function (options) {
 
     fs.readFile(_options.statusfile, function (error, data) {
       res.writeHead(error ? 404 : 200, {});
-      res.end('HEAD' === req.method ? '' || data);
+      res.end('HEAD' === req.method ? '' : data);
     });
   };
 
