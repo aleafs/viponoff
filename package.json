@@ -1,14 +1,14 @@
 {
-  "name": "statusfilter",
+  "name": "viponoff",
     "version": "0.0.1",
     "author": "Aleafs Zhang (zhangxc83@gmail.com)",
     "contributors": [
       {"name": "aleafs", "email": "zhangxc83@gmail.com", "web": "http://aleafs.github.com"} 
     ],
-    "homepage": "https://github.com/aleafs/gc-parser",
-    "repository": "git://github.com/aleafs/gc-parser.git",
-    "description": "GC log parser for Node.js, based on --trace_gc and --trace_gc_nvp options.",
-    "keywords": [ "node", "parser", "gc" ],
+    "homepage": "https://github.com/aleafs/viponoff",
+    "repository": "git://github.com/aleafs/viponoff.git",
+    "description": "Http service switch on/off filter.",
+    "keywords": [ "node", "vip", "onoff" ],
     "dependencies": {},
     "engines": {
       "node": ">=0.6.9"
