@@ -10,8 +10,10 @@ $ npm install viponoff
 
 ## Usage
 
-```javascript
 
+* 在node原生的http服务中使用（`dispatch.js`）：
+
+```javascript
 var filter = require('viponoff').create({
   'statusurl' : '/status',
   'statusfile' : '/var/www/status.ok'
@@ -23,13 +25,41 @@ require('http').createServer(filter).listen(8124);
 
 ```
 
+服务启动，用`/var/www/status.ok`文件来控制服务的上线下线：
 ```bash
 $ node dispatch.js &
 $ touch /var/www/status.ok
 $ curl http://localhost:8124/status -v
 
+> GET /status HTTP/1.1
+> User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5
+> Host: localhost:8124
+> Accept: */*
+			  > 
+			  < HTTP/1.1 200 OK
+			  < Connection: keep-alive
+			  < Transfer-Encoding: chunked
+
 $ rm -f /var/www/status.ok
 $ curl http://localhost:8124/status -v
+
+ \* About to connect() to localhost port 8124 (#0)
+	*   Trying ::1...
+	* Connection refused
+	*   Trying 127.0.0.1...
+	* connected
+	* Connected to localhost (127.0.0.1) port 8124 (#0)
+	> GET /status HTTP/1.1
+	> User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5
+	> Host: localhost:8124
+	> Accept: */*
+				  > 
+				  < HTTP/1.1 404 Not Found
+				  < Connection: keep-alive
+				  < Transfer-Encoding: chunked
+				  < 
+				  * Connection #0 to host localhost left intact
+				  * Closing connection #0
 ```
 
 ## License
