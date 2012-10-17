@@ -10,6 +10,27 @@ $ npm install viponoff
 
 ## Usage
 
+```javascript
+
+var filter = require('viponoff').create({
+  'statusurl' : '/status',
+  'statusfile' : '/var/www/status.ok'
+}, function (req, res) {
+  res.end('Hello world!');
+});
+
+require('http').createServer(filter).listen(8124);
+
+```
+
+```bash
+$ node dispatch.js &
+$ touch /var/www/status.ok
+$ curl http://localhost:8124/status -v
+
+$ rm -f /var/www/status.ok
+$ curl http://localhost:8124/status -v
+```
 
 ## License
 
