@@ -15,9 +15,19 @@ exports.create = function (options) {
   }
 
   return function (req, res, next) {
+    if (!req || !req.url || !res || !res.writeHead || !res.end) {
+      return;
+    }
+
+    var u = req.url.toString().split('?').shift();
+    if (_options.statusurl !== u) {
+      next && next(req, res);
+      return;
+    }
+
     fs.readFile(_options.statusfile, function (error, data) {
       res.writeHead(error ? 404 : 200, {});
-      res.end(data);
+      res.end('HEAD' === req.method ? '' || data);
     });
   };
 
