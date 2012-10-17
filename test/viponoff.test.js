@@ -1,8 +1,10 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2 foldmethod=marker: */
 
 var fs = require('fs');
+var http  = require('http');
 var should  = require('should');
 var urllib  = require('urllib');
+var connect = require('connect');
 
 var filter  = require(__dirname + '/../').create({
   'statusurl' : '/are_you_ok',
@@ -13,15 +15,12 @@ var filter  = require(__dirname + '/../').create({
 
 describe('viponoff test', function () {
 
-  /* {{{ should_work_with_http_server_works_fine() */
-  it ('should_work_with_http_server_works_fine', function (_done) {
+  /* {{{ private function runtest() */
 
+  var runtest = function (_done) {
     var n = 2;
-    var s = require('http').createServer(filter).listen(8124);
-
     var done  = function () {
       if ((--n) === 0) {
-        s.close();
         _done();
       }
     };
@@ -44,7 +43,26 @@ describe('viponoff test', function () {
         });
       });
     });
+  };
+  /* }}} */
 
+  /* {{{ should_work_with_http_server_fine() */
+  it ('should_work_with_http_server_fine', function (done) {
+    var s = http.createServer(filter).listen(8124);
+    runtest(function () {
+      s.close();
+      done();
+    });
+  });
+  /* }}} */
+
+  /* {{{ should_work_with_connect_fine() */
+  it ('should_work_with_connect_fine', function (done) {
+    var s = http.createServer(connect().use(filter)).listen(8124);
+    runtest(function () {
+      s.close();
+      done();
+    });
   });
   /* }}} */
 
