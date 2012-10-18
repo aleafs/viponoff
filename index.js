@@ -8,13 +8,14 @@ exports.create = function (options, next) {
 
   var _options = {
     'statusurl'  : '/status.taobao',
-    'statusfile' : ''
+    'statusfile' : '',
+    'setonline'  : true,
   };
   for (var i in options) {
     _options[i] = options[i];
   }
 
-  var online  = true;
+  var online  = _options.setonline;
 
   var _me = {};
 
@@ -37,15 +38,16 @@ exports.create = function (options, next) {
       return;
     }
 
-    if (true !== online) {
-      res.writeHead(404, {});
+    if (true === online && !_options.statusfile) {
+      res.writeHead(200, {});
       res.end('');
-    } else {
-      fs.readFile(_options.statusfile, function (error, data) {
-        res.writeHead(error ? 404 : 200, {});
-        res.end('HEAD' === req.method ? '' : data);
-      });
+      return;
     }
+
+    fs.readFile(_options.statusfile, function (error, data) {
+      res.writeHead((!online || error) ? 404 : 200, {});
+      res.end('HEAD' === req.method ? '' : data);
+    });
   };
 
   return _me;

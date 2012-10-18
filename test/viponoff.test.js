@@ -6,12 +6,13 @@ var should  = require('should');
 var urllib  = require('urllib');
 var connect = require('connect');
 
-var filter  = require(__dirname + '/../').create({
+var onoffer = require(__dirname + '/../').create({
   'statusurl' : '/are_you_ok',
+    'setonline' : false,
     'statusfile' : __dirname + '/status.tmp',
 }, function (req, res) {
   res.end('hello world');
-}).filter;
+});
 
 describe('viponoff test', function () {
 
@@ -25,6 +26,7 @@ describe('viponoff test', function () {
       }
     };
 
+    onoffer.offline();
     urllib.request('http:/' + '/localhost:8124/aa', function (error, data, res) {
       data.toString().should.eql('hello world');
       res.statusCode.should.eql(200);
@@ -37,8 +39,13 @@ describe('viponoff test', function () {
         fs.writeFile(__dirname + '/status.tmp', 'ON', function (error) {
           should.ok(!error);
           urllib.request('http:/' + '/localhost:8124/are_you_ok', function (error, data, res) {
-            res.statusCode.should.eql(200);
-            done();
+            res.statusCode.should.eql(404);
+
+            onoffer.online();
+            urllib.request('http:/' + '/localhost:8124/are_you_ok', function (error, data, res) {
+              res.statusCode.should.eql(200);
+              done();
+            });
           });
         });
       });
@@ -48,7 +55,7 @@ describe('viponoff test', function () {
 
   /* {{{ should_work_with_http_server_fine() */
   it ('should_work_with_http_server_fine', function (done) {
-    var s = http.createServer(filter).listen(8124);
+    var s = http.createServer(onoffer.filter).listen(8124);
     runtest(function () {
       s.close();
       done();
@@ -58,7 +65,7 @@ describe('viponoff test', function () {
 
   /* {{{ should_work_with_connect_fine() */
   it ('should_work_with_connect_fine', function (done) {
-    var s = http.createServer(connect().use(filter)).listen(8124);
+    var s = http.createServer(connect().use(onoffer.filter)).listen(8124);
     runtest(function () {
       s.close();
       done();
