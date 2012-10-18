@@ -19,11 +19,11 @@ exports.create = function (options, next) {
   var _me = {};
 
   _me.online = function () {
-    online  = false;
+    online  = true;
   };
 
   _me.offline = function () {
-    online  = true;
+    online  = false;
   };
 
   _me.filter = function (req, res) {
