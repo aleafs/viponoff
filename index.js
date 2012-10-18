@@ -15,16 +15,16 @@ exports.create = function (options, next) {
     _options[i] = options[i];
   }
 
-  var online  = _options.setonline;
+  var _online = _options.setonline;
 
   var _me = {};
 
   _me.online = function () {
-    online  = true;
+    _online = true;
   };
 
   _me.offline = function () {
-    online  = false;
+    _online = false;
   };
 
   _me.filter = function (req, res) {
@@ -38,14 +38,14 @@ exports.create = function (options, next) {
       return;
     }
 
-    if (true === online && !_options.statusfile) {
+    if (true === _online && !_options.statusfile) {
       res.writeHead(200, {});
       res.end('');
       return;
     }
 
     fs.readFile(_options.statusfile, function (error, data) {
-      res.writeHead((!online || error) ? 404 : 200, {});
+      res.writeHead((!_online || error) ? 404 : 200, {});
       res.end('HEAD' === req.method ? '' : data);
     });
   };

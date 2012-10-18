@@ -16,7 +16,8 @@ $ npm install viponoff
 ```javascript
 var filter = require('viponoff').create({
   'statusurl' : '/status',
-  'statusfile' : '/var/www/status.ok'
+  'setonline' : true,
+  'statusfile' : '/var/www/status.taobao'
 }, function (req, res) {
   res.end('Hello world!');
 }).filter;
@@ -25,10 +26,10 @@ require('http').createServer(filter).listen(8124);
 
 ```
 
-服务启动，用`/var/www/status.ok`文件来控制服务的上线下线：
+服务启动，用`/var/www/status.taobao`文件来控制服务的上线下线：
 ```bash
 $ node dispatch.js &
-$ touch /var/www/status.ok
+$ touch /var/www/status.taobao
 $ curl http://localhost:8124/status -v
 
 * About to connect() to localhost port 8124 (#0)
@@ -47,7 +48,7 @@ $ curl http://localhost:8124/status -v
 * Connection #0 to host localhost left intact
 * Closing connection #0
 
-$ rm -f /var/www/status.ok
+$ rm -f /var/www/status.taobao
 $ curl http://localhost:8124/status -v
 
 * About to connect() to localhost port 8124 (#0)
