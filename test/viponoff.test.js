@@ -11,7 +11,7 @@ var filter  = require(__dirname + '/../').create({
     'statusfile' : __dirname + '/status.tmp',
 }, function (req, res) {
   res.end('hello world');
-});
+}).filter;
 
 describe('viponoff test', function () {
 

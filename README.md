@@ -19,7 +19,7 @@ var filter = require('viponoff').create({
   'statusfile' : '/var/www/status.ok'
 }, function (req, res) {
   res.end('Hello world!');
-});
+}).filter;
 
 require('http').createServer(filter).listen(8124);
 
