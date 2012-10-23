@@ -4,10 +4,11 @@
 
 var fs = require('fs');
 var util = require('util');
+var _ = require(__dirname + '/package.json');
 
 var HTTP_RES_HEADER = {
   'Content-Type' : 'text/plain',
-  'X-Powered-By' : util.format('node.js %s, with viponoff 0.1.1', process.versions.node)
+  'X-Powered-By' : util.format('node.js %s, with %s %s', process.versions.node, _.name, _.version)
 };
 
 exports.create = function (options, next) {
