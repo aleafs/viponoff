@@ -11,13 +11,14 @@ if [ "X" != "X${1}" ] ; then
 fi
 
 if_status_by_viponoff() {
-    curl --silent --verbose --max-time 5 --user-agent "viponoff monitor" "http://localhost${1}" \
+    curl --head --silent --max-time 5 --user-agent "viponoff monitor" "http://localhost${1}" \
         | grep -i "x-powered-by" | grep -c "viponoff"
 }
 
 declare -i RETCODE=0
 echo -ne "check viponoff by ${STATUSURL} ..."
 if [ `if_status_by_viponoff "${STATUSURL}"` -gt 0 ] ; then
+    RETCODE=0
     echo_success
 else
     RETCODE=1
