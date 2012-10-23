@@ -1,6 +1,7 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2 foldmethod=marker: */
 
 var fs = require('fs');
+var util  = require('util');
 var http  = require('http');
 var should  = require('should');
 var urllib  = require('urllib');
@@ -28,22 +29,28 @@ describe('viponoff test', function () {
 
     onoffer.offline();
     urllib.request('http:/' + '/localhost:8124/aa', function (error, data, res) {
+      should.ok(!error);
       data.toString().should.eql('hello world');
-      res.statusCode.should.eql(200);
+      res.should.have.property('statusCode', 200);
       done();
     });
 
     fs.unlink(__dirname + '/status.tmp', function (error) {
       urllib.request('http:/' + '/localhost:8124/are_you_ok', function (error, data, res) {
-        res.statusCode.should.eql(404);
+        res.should.have.property('statusCode', 404);
+        res.headers.should.have.property('x-powered-by', util.format('node.js %s, with viponoff 0.1.1', process.versions.node));
         fs.writeFile(__dirname + '/status.tmp', 'ON', function (error) {
           should.ok(!error);
           urllib.request('http:/' + '/localhost:8124/are_you_ok', function (error, data, res) {
-            res.statusCode.should.eql(404);
+            res.should.have.property('statusCode', 404);
+            res.headers.should.have.property('x-powered-by', 
+              util.format('node.js %s, with viponoff 0.1.1', process.versions.node));
 
             onoffer.online();
             urllib.request('http:/' + '/localhost:8124/are_you_ok', function (error, data, res) {
-              res.statusCode.should.eql(200);
+              res.should.have.property('statusCode', 200);
+              res.headers.should.have.property('x-powered-by', 
+              util.format('node.js %s, with viponoff 0.1.1', process.versions.node));
               done();
             });
           });

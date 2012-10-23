@@ -3,6 +3,12 @@
 "use strict";
 
 var fs = require('fs');
+var util = require('util');
+
+var HTTP_RES_HEADER = {
+  'Content-Type' : 'text/plain',
+  'X-Powered-By' : util.format('node.js %s, with viponoff 0.1.1', process.versions.node)
+};
 
 exports.create = function (options, next) {
 
@@ -39,13 +45,13 @@ exports.create = function (options, next) {
     }
 
     if (true === _online && !_options.statusfile) {
-      res.writeHead(200, {});
+      res.writeHead(200, HTTP_RES_HEADER);
       res.end('');
       return;
     }
 
     fs.readFile(_options.statusfile, function (error, data) {
-      res.writeHead((!_online || error) ? 404 : 200, {});
+      res.writeHead((!_online || error) ? 404 : 200, HTTP_RES_HEADER);
       res.end('HEAD' === req.method ? '' : data);
     });
   };
