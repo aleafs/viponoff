@@ -45,7 +45,7 @@ $ curl http://localhost:8124/status -v
 < Connection: keep-alive
 < Transfer-Encoding: chunked
 < content-type: text/plain
-< x-powered-by: node.js 0.6.11, with viponoff 0.1.1
+< x-powered-by: node.js 0.6.11, with viponoff 0.1.2
 < 
 * Connection #0 to host localhost left intact
 * Closing connection #0
@@ -66,7 +66,7 @@ $ curl http://localhost:8124/status -v
 < Connection: keep-alive
 < Transfer-Encoding: chunked
 < content-type: text/plain
-< x-powered-by: node.js 0.6.11, with viponoff 0.1.1
+< x-powered-by: node.js 0.6.11, with viponoff 0.1.2
 < 
 * Connection #0 to host localhost left intact
 * Closing connection #0
