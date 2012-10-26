@@ -14,15 +14,20 @@ $ npm install viponoff
 * 在node原生的http服务中使用（`dispatch.js`）：
 
 ```javascript
-var filter = require('viponoff').create({
+var viponoff = require('viponoff').create({
   'statusurl' : '/status',
-  'setonline' : true,
-  'statusfile' : '/var/www/status.taobao'
+  'statusfile' : '/var/www/status.taobao',
+  'setonline' : true // [optional] default true
 }, function (req, res) {
   res.end('Hello world!');
-}).filter;
+});
 
-require('http').createServer(filter).listen(8124);
+require('http').createServer(viponoff.filter).listen(8124);
+
+// soft enable
+viponoff.online();
+// soft disable
+viponoff.offline();
 
 ```
 
